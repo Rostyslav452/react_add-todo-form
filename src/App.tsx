@@ -49,7 +49,7 @@ export const App = () => {
 
   const onAdd = (newTodo: CreatedTodo) => {
     setTodos(currentTodos => {
-      const allIndexes = currentTodos.map(e => e.id);
+      const allIndexes = currentTodos.map(todoElement => todoElement.id);
       const id = allIndexes.length === 0 ? 1 : Math.max(...allIndexes);
 
       const user = usersFromServer.find((u: User) => u.id === newTodo.userId);
@@ -62,7 +62,7 @@ export const App = () => {
         ...currentTodos,
         {
           title: newTodo.title,
-          completed: newTodo.completed,
+          completed: newTodo.completed || false,
           user,
           id: id + 1,
         },
@@ -77,8 +77,8 @@ export const App = () => {
     setUserIdError('');
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     if (!userId) {
       setUserIdError('Please choose a user');
@@ -96,14 +96,14 @@ export const App = () => {
     onReset();
   };
 
-  const titleHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const titleHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitleError('');
-    setTitle(e.target.value);
+    setTitle(event.target.value);
   };
 
-  const userIdHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const userIdHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setUserIdError('');
-    setUserId(+e.target.value);
+    setUserId(+event.target.value);
   };
 
   return (
@@ -116,6 +116,7 @@ export const App = () => {
             type="text"
             value={title}
             data-cy="titleInput"
+            placeholder="Please enter a title"
             onChange={titleHandler}
           />
           {titleError !== '' && <span className="error">{titleError}</span>}
