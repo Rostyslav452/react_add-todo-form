@@ -50,7 +50,7 @@ export const App = () => {
   const onAdd = (newTodo: CreatedTodo) => {
     setTodos(currentTodos => {
       const allIndexes = currentTodos.map(todoElement => todoElement.id);
-      const id = allIndexes.length === 0 ? 1 : Math.max(...allIndexes);
+      const id = allIndexes.length === 0 ? 0 : Math.max(...allIndexes);
 
       const user = usersFromServer.find((u: User) => u.id === newTodo.userId);
 
@@ -112,8 +112,10 @@ export const App = () => {
 
       <form action="/api/todos" method="POST" onSubmit={onSubmit}>
         <div className="field">
+          <label htmlFor="titleInput">Please enter a title</label>
           <input
             type="text"
+            name="titleInput"
             value={title}
             data-cy="titleInput"
             placeholder="Please enter a title"
@@ -123,7 +125,13 @@ export const App = () => {
         </div>
 
         <div className="field">
-          <select data-cy="userSelect" value={userId} onChange={userIdHandler}>
+          <label htmlFor="userSelect">Please enter a title</label>
+          <select
+            name="userSelect"
+            data-cy="userSelect"
+            value={userId}
+            onChange={userIdHandler}
+          >
             <option value="0">Choose a user</option>
             {usersFromServer.map(user => (
               <option value={user.id} key={user.id}>
